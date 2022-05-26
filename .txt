@@ -1,0 +1,159 @@
+import better_profanity
+import pyautogui
+k=1
+def respnd(text):
+    pyautogui.click(1514,983)
+    for i in text:
+        pyautogui.keyDown(i)
+        pyautogui.keyUp(i)
+    pyautogui.keyDown('enter')
+    pyautogui.keyUp('Enter')
+def censor(txt):
+    file = open("D:\pythonproject\\allowed.txt", 'r')
+    data = file.read()
+    data = data.split('|')
+    k = 0
+    txt+=" "
+    left = []
+    t = ''
+    for i in range(0, len(txt)):
+        if (txt[i] == " "):
+            word = txt[k:i]
+            k = i + 1
+            c = 0
+            for i in data:
+                if (word == i):
+                    left.append(word)
+                    t += "uuuu" + " "
+                    c = 1
+            if (c == 0):
+                t += word + " "
+    t = better_profanity.profanity.censor(t, '*')
+    y=0
+    n=''
+    t=t.split()
+    for i in t:
+
+        if (i == "uuuu"):
+            n=n+left[y]+" "
+        else:
+            n=n+i+" "
+    return n
+while(k==1):
+    print("Enter your choice")
+    print("One for entering the profanity based console")
+    print("Two for customise the profanity reader according to your choice")
+    print("Three for remove a world form omitted world list")
+    print("Four for exit")
+    a=int(input())
+    if(a==1):
+        age=int(input("Enter your age"))
+        if(age>=18):
+           sent=''
+           j=1
+           while(j!=10):
+               j+=1
+               sent=input("Enter the message")
+               sent=censor(sent)
+               if sent=="**":
+                   break
+               print(sent)
+               respnd(sent)
+        elif(age<18):
+            sent = ''
+            j=1
+            while (j != 10):
+                j+=1
+                sent = input("Enter the message")
+                if sent=="**":
+                    break
+                count = better_profanity.profanity._count_non_allowed_characters(word)
+                if count>0:
+                    print("You are not old enough to talk about thes kind of content in your message")
+                else:
+                    respnd(sent)
+        else:
+            continue
+    elif(a==2):
+        print("Enter your choice")
+        print("1.for adding a word")
+        print("2.for adding a word to be emit")
+        ch=int(input())
+        if(ch==1):
+            world = input("Please enter the word you want to enter to your personal generalised list:")
+            world.lower()
+            file = open("D:\pythonproject\\profanity_wordlist.txt", 'r')
+            data = file.read()
+            file.close()
+            data = data.split()
+            c = 0
+            for i in data:
+                if (world == i):
+                    c = 1
+            if (c == 0):
+                file = open("D:\pythonproject\\profanity_wordlist.txt", 'a')
+                file.writelines("")
+                file.writelines(world)
+                print("Writen succesfull")
+                file.close()
+
+            else:
+                print("The word already exsist in the library")
+
+        elif(ch==2):
+            world = input("Please enter the word you dont want to be removed by profanity extension:")
+            world.lower()
+            file = open("D:\pythonproject\\allowed.txt", 'r')
+            data = file.read()
+            file.close()
+            data = data.split('|')
+            print(data)
+            c = 0
+            for i in data:
+                if (world == i):
+                    c = 1
+            if (c == 0):
+                file = open("D:\pythonproject\\allowed.txt", 'a')
+                file.write(world)
+                file.write('|')
+                print("Writen succesfull")
+                file.close()
+
+
+            else:
+                print("The word already exsist in the library")
+    elif(a==3):
+        world = input("Please enter the word you want to be removed from omition list:")
+        world.lower()
+        file = open("D:\pythonproject\\allowed.txt", 'r')
+        data = file.read()
+        file.close()
+        data = data.split('|')
+        data1 = []
+        print(data)
+        c = 0
+        y = ''
+        for i in data:
+            if (world == i):
+                c = 1
+
+        if (c == 1):
+            for j in data:
+                if (j != world):
+                    data1.append(j)
+            file = open("D:\pythonproject\\allowed.txt", 'w')
+            for j in data1:
+                file.write(j)
+                file.write('|')
+            print("Word removed succesfully")
+            file.close()
+    elif(a==4):
+        print("Thank you for using our profanity exclusion" )
+        k=0
+    else:
+        print("Wrong Choice")
+
+
+
+
+
